@@ -18,10 +18,13 @@ class TMDbService {
   // Search movies and TV shows
   async search(query, page = 1) {
     const cacheKey = `tmdb:search:${query}:${page}`;
-    const cached = await redis.get(cacheKey);
 
-    if (cached) {
-      return JSON.parse(cached);
+    // Check Redis cache if available
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
     }
 
     try {
@@ -44,7 +47,10 @@ class TMDbService {
         totalResults: response.data.total_results,
       };
 
-      await redis.setex(cacheKey, config.cache.ttl.searchResults, JSON.stringify(data));
+      // Cache in Redis if available
+      if (redis) {
+        await redis.setex(cacheKey, config.cache.ttl.searchResults, JSON.stringify(data));
+      }
       return data;
     } catch (error) {
       console.error('TMDb search error:', error.message);
@@ -55,10 +61,12 @@ class TMDbService {
   // Get detailed information about a movie
   async getMovieDetails(tmdbId) {
     const cacheKey = `tmdb:movie:${tmdbId}`;
-    const cached = await redis.get(cacheKey);
 
-    if (cached) {
-      return JSON.parse(cached);
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
     }
 
     try {
@@ -69,7 +77,9 @@ class TMDbService {
       ]);
 
       const data = this.formatMovieDetails(details.data, credits.data, externalIds.data);
-      await redis.setex(cacheKey, config.cache.ttl.movieMetadata, JSON.stringify(data));
+      if (redis) {
+        await redis.setex(cacheKey, config.cache.ttl.movieMetadata, JSON.stringify(data));
+      }
       return data;
     } catch (error) {
       console.error(`TMDb movie details error (ID: ${tmdbId}):`, error.message);
@@ -80,10 +90,12 @@ class TMDbService {
   // Get detailed information about a TV show
   async getTVDetails(tmdbId) {
     const cacheKey = `tmdb:tv:${tmdbId}`;
-    const cached = await redis.get(cacheKey);
 
-    if (cached) {
-      return JSON.parse(cached);
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
     }
 
     try {
@@ -94,7 +106,9 @@ class TMDbService {
       ]);
 
       const data = this.formatTVDetails(details.data, credits.data, externalIds.data);
-      await redis.setex(cacheKey, config.cache.ttl.movieMetadata, JSON.stringify(data));
+      if (redis) {
+        await redis.setex(cacheKey, config.cache.ttl.movieMetadata, JSON.stringify(data));
+      }
       return data;
     } catch (error) {
       console.error(`TMDb TV details error (ID: ${tmdbId}):`, error.message);
@@ -105,10 +119,12 @@ class TMDbService {
   // Get popular movies
   async getPopular(mediaType = 'movie', page = 1) {
     const cacheKey = `tmdb:popular:${mediaType}:${page}`;
-    const cached = await redis.get(cacheKey);
 
-    if (cached) {
-      return JSON.parse(cached);
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
     }
 
     try {
@@ -125,7 +141,9 @@ class TMDbService {
         totalPages: response.data.total_pages,
       };
 
-      await redis.setex(cacheKey, 3600, JSON.stringify(data)); // 1 hour cache
+      if (redis) {
+        await redis.setex(cacheKey, 3600, JSON.stringify(data)); // 1 hour cache
+      }
       return data;
     } catch (error) {
       console.error('TMDb popular error:', error.message);
@@ -136,10 +154,12 @@ class TMDbService {
   // Get trending content
   async getTrending(mediaType = 'all', timeWindow = 'week') {
     const cacheKey = `tmdb:trending:${mediaType}:${timeWindow}`;
-    const cached = await redis.get(cacheKey);
 
-    if (cached) {
-      return JSON.parse(cached);
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
     }
 
     try {
@@ -149,7 +169,9 @@ class TMDbService {
         .filter(item => item.media_type === 'movie' || item.media_type === 'tv')
         .map(item => this.formatSearchResult(item));
 
-      await redis.setex(cacheKey, 3600, JSON.stringify(results)); // 1 hour cache
+      if (redis) {
+        await redis.setex(cacheKey, 3600, JSON.stringify(results)); // 1 hour cache
+      }
       return results;
     } catch (error) {
       console.error('TMDb trending error:', error.message);
@@ -186,17 +208,21 @@ class TMDbService {
   // Get available genres
   async getGenres(mediaType = 'movie') {
     const cacheKey = `tmdb:genres:${mediaType}`;
-    const cached = await redis.get(cacheKey);
 
-    if (cached) {
-      return JSON.parse(cached);
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
     }
 
     try {
       const endpoint = mediaType === 'movie' ? '/genre/movie/list' : '/genre/tv/list';
       const response = await this.client.get(endpoint);
 
-      await redis.setex(cacheKey, 7 * 24 * 3600, JSON.stringify(response.data.genres)); // 7 days
+      if (redis) {
+        await redis.setex(cacheKey, 7 * 24 * 3600, JSON.stringify(response.data.genres)); // 7 days
+      }
       return response.data.genres;
     } catch (error) {
       console.error('TMDb genres error:', error.message);
