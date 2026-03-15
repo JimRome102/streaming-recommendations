@@ -1,0 +1,31 @@
+databases:
+  - name: streaming-rec-db
+    databaseName: streaming_rec
+    user: streamuser
+    plan: free
+
+services:
+  - type: web
+    name: streaming-rec-api
+    runtime: node
+    plan: free
+    buildCommand: cd server && npm install && npx prisma generate && npx prisma migrate deploy
+    startCommand: cd server && npm start
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: streaming-rec-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: FRONTEND_URL
+        value: https://client-ruddy-five.vercel.app
+      - key: TMDB_API_KEY
+        value: 38ccb9e77d957b35f0a8ad173f0810ba
+      - key: WATCHMODE_API_KEY
+        value: k1OAUtsk1OSry3YiYwf64P7mz3jVki5CIErB9RfE
+      - key: REDIS_URL
+        value: redis://red-placeholder:6379
