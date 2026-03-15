@@ -36,9 +36,14 @@ const HomePage = () => {
               <div className="text-3xl font-bold text-red-600 mb-6">
                 {ratingsCount} / 5 ratings
               </div>
-              <Link to="/rate" className="btn-primary inline-block">
-                Start Rating Movies
-              </Link>
+              <div className="flex justify-center gap-4">
+                <Link to="/rate" className="btn-primary">
+                  Start Rating Movies
+                </Link>
+                <Link to="/preferences" className="btn-secondary">
+                  Set Preferences
+                </Link>
+              </div>
             </div>
           ) : (
             <div>
@@ -52,18 +57,8 @@ const HomePage = () => {
           )}
         </div>
 
-        {/* Quick Actions */}
-        <div className="flex justify-center gap-4 mb-8">
-          <Link to="/rate" className="btn-primary">
-            Rate Movies
-          </Link>
-          <Link to="/preferences" className="btn-secondary">
-            Set Preferences
-          </Link>
-        </div>
-
         {/* Features - Static Info Cards */}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 mt-8">
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-900/30 via-gray-900 to-gray-900 p-8 border-2 border-purple-500/20">
             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
             <div className="relative">
