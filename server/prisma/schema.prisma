@@ -1,0 +1,99 @@
+// Prisma schema for Streaming Recommendations App
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User ratings for movies/shows
+model UserRating {
+  id         Int      @id @default(autoincrement())
+  userId     String   // Browser fingerprint
+  tmdbId     Int      // TMDb movie/show ID
+  mediaType  String   // "movie" or "tv"
+  rating     Float    // 0-5 stars
+  title      String
+  watched    Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, tmdbId])
+  @@index([userId])
+  @@index([tmdbId])
+  @@map("user_ratings")
+}
+
+// User preferences for genres and platforms
+model UserPreference {
+  id                 Int      @id @default(autoincrement())
+  userId             String   @unique
+  preferredGenres    Int[]    // Array of TMDb genre IDs
+  preferredPlatforms String[] // ["netflix", "hulu", "prime"]
+  minRating          Float    @default(6.0) // Minimum rating threshold
+  excludeGenres      Int[]    // Genres to avoid
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@map("user_preferences")
+}
+
+// Cached movie/show metadata
+model CachedContent {
+  id                  Int      @id @default(autoincrement())
+  tmdbId              Int      @unique
+  title               String
+  overview            String?
+  posterPath          String?
+  backdropPath        String?
+  mediaType           String   // "movie" or "tv"
+  genres              Int[]    // Array of genre IDs
+  releaseDate         String?
+  tmdbRating          Float?
+  tmdbVoteCount       Int?
+  imdbRating          Float?
+  imdbId              String?
+  rtScore             Int?     // Rotten Tomatoes score
+  streamingPlatforms  Json?    // { netflix: true, hulu: false, prime: true }
+  socialScore         Float?   // Calculated from Reddit mentions
+  popularity          Float?   // TMDb popularity score
+  runtime             Int?     // Minutes
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([tmdbId])
+  @@index([mediaType])
+  @@map("cached_content")
+}
+
+// Track recommendations to avoid repetition
+model RecommendationHistory {
+  id             Int      @id @default(autoincrement())
+  userId         String
+  tmdbId         Int
+  recommendedAt  DateTime @default(now())
+  hidden         Boolean  @default(false) // User can hide recommendations
+
+  @@index([userId, recommendedAt])
+  @@index([userId, tmdbId])
+  @@map("recommendation_history")
+}
+
+// Cache Reddit trending data
+model SocialTrend {
+  id             Int      @id @default(autoincrement())
+  tmdbId         Int?     // Null if not matched to TMDb
+  title          String
+  source         String   // Subreddit name
+  mentions       Int      @default(1)
+  sentimentScore Float?   // -1 to 1
+  trendingDate   DateTime @default(now())
+  postUrl        String?
+  upvotes        Int?
+
+  @@index([tmdbId])
+  @@index([trendingDate])
+  @@map("social_trends")
+}
