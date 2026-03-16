@@ -29,10 +29,13 @@ class WatchmodeService {
   // Search for a title to get Watchmode ID
   async searchTitle(title, mediaType) {
     const cacheKey = `watchmode:search:${title}:${mediaType}`;
-    const cached = await redis.get(cacheKey);
 
-    if (cached) {
-      return JSON.parse(cached);
+    // Check Redis cache if available
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
     }
 
     try {
@@ -50,7 +53,12 @@ class WatchmodeService {
         : results;
 
       const data = filtered.length > 0 ? filtered[0] : null;
-      await redis.setex(cacheKey, config.cache.ttl.searchResults, JSON.stringify(data));
+
+      // Cache if Redis is available
+      if (redis) {
+        await redis.setex(cacheKey, config.cache.ttl.searchResults, JSON.stringify(data));
+      }
+
       return data;
     } catch (error) {
       console.error('Watchmode search error:', error.message);
@@ -61,10 +69,13 @@ class WatchmodeService {
   // Get streaming availability by Watchmode ID
   async getStreamingAvailability(watchmodeId) {
     const cacheKey = `watchmode:sources:${watchmodeId}`;
-    const cached = await redis.get(cacheKey);
 
-    if (cached) {
-      return JSON.parse(cached);
+    // Check Redis cache if available
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
     }
 
     try {
@@ -83,7 +94,11 @@ class WatchmodeService {
         lastUpdated: new Date().toISOString(),
       };
 
-      await redis.setex(cacheKey, config.cache.ttl.streamingAvailability, JSON.stringify(availability));
+      // Cache if Redis is available
+      if (redis) {
+        await redis.setex(cacheKey, config.cache.ttl.streamingAvailability, JSON.stringify(availability));
+      }
+
       return availability;
     } catch (error) {
       console.error(`Watchmode availability error (ID: ${watchmodeId}):`, error.message);

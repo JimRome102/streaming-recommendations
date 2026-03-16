@@ -82,13 +82,12 @@ class RecommendationEngine {
       );
       console.log(`📊 Scored candidates: ${scoredCandidates.length}`);
 
-      // Filter by minimum rating (be lenient with platform availability for now)
+      // Filter by minimum rating and platform availability
       const qualified = scoredCandidates.filter(c => {
         const avgRating = this.getAverageRating(c);
         const hasRating = avgRating >= minRating;
-        // TODO: Re-enable strict platform filtering once Watchmode API coverage improves
-        // For now, show content even without confirmed streaming availability
-        return hasRating;
+        const isOnPlatform = this.isOnPlatform(c, platforms);
+        return hasRating && isOnPlatform;
       });
       console.log(`📊 Qualified after rating/platform filter: ${qualified.length}`);
 
