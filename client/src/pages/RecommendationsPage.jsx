@@ -21,13 +21,20 @@ const RecommendationsPage = () => {
   } = useQuery({
     queryKey: ['recommendations', userId, selectedPlatforms.join(',')],
     queryFn: async () => {
+      // Don't send empty platform list
+      const platformParam = selectedPlatforms.length > 0
+        ? selectedPlatforms.join(',')
+        : 'netflix,hulu,prime,hbo,disney,paramount,showtime,peacock';
+
       const response = await recommendationsApi.get(userId, {
         count: 20,
-        platform: selectedPlatforms.join(','),
+        platform: platformParam,
       });
       return response.data.recommendations;
     },
     enabled: ratingsCount >= 5,
+    keepPreviousData: true, // Keep showing old data while fetching new data
+    staleTime: 30000, // Consider data fresh for 30 seconds
   });
 
   const handlePlatformToggle = (platform) => {
