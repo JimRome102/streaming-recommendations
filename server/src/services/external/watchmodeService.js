@@ -132,10 +132,13 @@ class WatchmodeService {
   // Get streaming availability by IMDb ID
   async getStreamingAvailabilityByImdbId(imdbId) {
     const cacheKey = `watchmode:imdb:${imdbId}`;
-    const cached = await redis.get(cacheKey);
 
-    if (cached) {
-      return JSON.parse(cached);
+    // Check Redis cache if available
+    if (redis) {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        return JSON.parse(cached);
+      }
     }
 
     try {
@@ -157,7 +160,12 @@ class WatchmodeService {
       }
 
       const availability = await this.getStreamingAvailability(results[0].id);
-      await redis.setex(cacheKey, config.cache.ttl.streamingAvailability, JSON.stringify(availability));
+
+      // Cache if Redis is available
+      if (redis) {
+        await redis.setex(cacheKey, config.cache.ttl.streamingAvailability, JSON.stringify(availability));
+      }
+
       return availability;
     } catch (error) {
       console.error(`Watchmode IMDb availability error (${imdbId}):`, error.message);

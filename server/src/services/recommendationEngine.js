@@ -1,6 +1,7 @@
 const prisma = require('../config/database');
 const tmdbService = require('./external/tmdbService');
 const redditService = require('./external/redditService');
+const watchmodeService = require('./external/watchmodeService');
 const cacheService = require('./cacheService');
 
 // Weights for the composite score (must sum to 1.0)
