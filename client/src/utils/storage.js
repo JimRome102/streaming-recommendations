@@ -1,5 +1,8 @@
 // Generate a simple browser fingerprint for user ID
 export const generateUserId = () => {
+  // Include browser-specific data to prevent iCloud sync collisions
+  const browserInfo = navigator.userAgent + navigator.vendor + navigator.platform;
+
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   ctx.textBaseline = 'top';
@@ -7,10 +10,11 @@ export const generateUserId = () => {
   ctx.fillText('fingerprint', 2, 2);
 
   const canvasData = canvas.toDataURL();
-  let hash = 0;
+  const combinedData = canvasData + browserInfo;
 
-  for (let i = 0; i < canvasData.length; i++) {
-    const char = canvasData.charCodeAt(i);
+  let hash = 0;
+  for (let i = 0; i < combinedData.length; i++) {
+    const char = combinedData.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
     hash = hash & hash;
   }
