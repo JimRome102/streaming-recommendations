@@ -6,6 +6,7 @@ import RatingsPage from './pages/RatingsPage';
 import PreferencesPage from './pages/PreferencesPage';
 import RecommendationsPage from './pages/RecommendationsPage';
 import UserIdFix from './components/common/UserIdFix';
+import RatingsFetcher from './components/common/RatingsFetcher';
 
 // Create React Query client
 const queryClient = new QueryClient({
@@ -23,6 +24,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Router>
         <UserIdFix />
+        <RatingsFetcher />
         <div className="min-h-screen bg-gray-950">
           <Header />
           <main>
