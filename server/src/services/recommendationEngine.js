@@ -1,6 +1,7 @@
 const prisma = require('../config/database');
 const tmdbService = require('./external/tmdbService');
 const redditService = require('./external/redditService');
+const watchmodeService = require('./external/watchmodeService');
 const cacheService = require('./cacheService');
 
 // Weights for the composite score (must sum to 1.0)
@@ -74,7 +75,6 @@ class RecommendationEngine {
       }
 
       // Fetch streaming data for items that don't have it (on-the-fly fix for cached items)
-      const watchmodeService = require('./external/watchmodeService');
       const itemsNeedingStreaming = enrichedCandidates.filter(c => !c.streamingPlatforms);
 
       if (itemsNeedingStreaming.length > 0) {
