@@ -203,7 +203,7 @@ class RecommendationEngine {
   }
 
   // Discover candidate content using TMDb
-  async discoverCandidates(preferredGenres, excludeGenres, platforms, limit = 100) {
+  async discoverCandidates(preferredGenres, excludeGenres, platforms, limit = 50) {
     const candidates = [];
     const seenIds = new Set();
 

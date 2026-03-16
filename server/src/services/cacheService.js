@@ -113,33 +113,21 @@ class CacheService {
       return allResults;
     }
 
-    // Batch fetch missing items with rate limiting
-    const BATCH_SIZE = 30; // Process 30 items at a time (under 40/10s limit)
-    const BATCH_DELAY = 10000; // 10 second delay between batches
+    // Fetch all items concurrently (cache checks prevent excessive API calls)
+    console.log(`📦 Fetching ${itemsToFetch.length} items concurrently...`);
 
-    for (let i = 0; i < itemsToFetch.length; i += BATCH_SIZE) {
-      const batch = itemsToFetch.slice(i, i + BATCH_SIZE);
-      console.log(`📦 Fetching batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(itemsToFetch.length / BATCH_SIZE)} (${batch.length} items)`);
+    const results = await Promise.allSettled(
+      itemsToFetch.map(item => this.getContent(item.tmdbId, item.mediaType))
+    );
 
-      const results = await Promise.allSettled(
-        batch.map(item => this.getContent(item.tmdbId, item.mediaType))
-      );
+    const fulfilled = results
+      .filter(r => r.status === 'fulfilled')
+      .map(r => r.value);
 
-      const fulfilled = results
-        .filter(r => r.status === 'fulfilled')
-        .map(r => r.value);
+    const rejected = results.filter(r => r.status === 'rejected').length;
+    console.log(`✅ Fetch complete: ${fulfilled.length} succeeded, ${rejected} failed`);
 
-      const rejected = results.filter(r => r.status === 'rejected').length;
-      console.log(`✅ Batch complete: ${fulfilled.length} succeeded, ${rejected} failed`);
-
-      allResults.push(...fulfilled);
-
-      // Delay before next batch (except for last batch)
-      if (i + BATCH_SIZE < itemsToFetch.length) {
-        console.log(`⏳ Waiting ${BATCH_DELAY / 1000}s before next batch to respect rate limits...`);
-        await new Promise(resolve => setTimeout(resolve, BATCH_DELAY));
-      }
-    }
+    allResults.push(...fulfilled);
 
     console.log(`📊 Total available: ${allResults.length}/${items.length} items (${cached.length} from cache, ${allResults.length - cached.length} newly fetched)`);
     return allResults;
