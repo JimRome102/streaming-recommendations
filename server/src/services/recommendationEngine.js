@@ -44,11 +44,11 @@ class RecommendationEngine {
 
       console.log(`📊 Preferred genres: ${preferredGenres.join(', ')}`);
 
-      // Get recommendation history to avoid duplicates
-      const recentRecommendations = await this.getRecentRecommendations(userId, 30);
+      // Get hidden recommendations to exclude (only exclude hidden items, not all history)
+      const hiddenRecommendations = await this.getHiddenRecommendations(userId);
       const excludedTmdbIds = new Set([
         ...userRatings.map(r => r.tmdbId),
-        ...recentRecommendations.map(r => r.tmdbId),
+        ...hiddenRecommendations.map(r => r.tmdbId),
       ]);
 
       console.log(`📊 Excluding ${excludedTmdbIds.size} already seen/rated items`);
@@ -329,16 +329,12 @@ class RecommendationEngine {
     });
   }
 
-  // Helper: Get recent recommendations
-  async getRecentRecommendations(userId, days) {
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - days);
-
+  // Helper: Get hidden recommendations to exclude
+  async getHiddenRecommendations(userId) {
     return await prisma.recommendationHistory.findMany({
       where: {
         userId,
-        recommendedAt: { gte: cutoffDate },
-        hidden: false,
+        hidden: true,
       },
     });
   }
