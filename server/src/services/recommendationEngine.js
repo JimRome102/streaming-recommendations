@@ -73,6 +73,35 @@ class RecommendationEngine {
         return [];
       }
 
+      // Fetch streaming data for items that don't have it (on-the-fly fix for cached items)
+      const watchmodeService = require('./external/watchmodeService');
+      const itemsNeedingStreaming = enrichedCandidates.filter(c => !c.streamingPlatforms);
+
+      if (itemsNeedingStreaming.length > 0) {
+        console.log(`🔄 Fetching streaming data for ${itemsNeedingStreaming.length} items...`);
+
+        await Promise.allSettled(
+          itemsNeedingStreaming.slice(0, 20).map(async (item) => {
+            try {
+              const streaming = item.imdbId
+                ? await watchmodeService.getStreamingAvailabilityByImdbId(item.imdbId)
+                : await watchmodeService.getStreamingAvailabilityByTitle(item.title, item.mediaType);
+
+              if (streaming) {
+                item.streamingPlatforms = streaming;
+                // Update in database
+                await prisma.cachedContent.update({
+                  where: { id: item.id },
+                  data: { streamingPlatforms: streaming }
+                });
+              }
+            } catch (err) {
+              // Silently fail - will filter out later
+            }
+          })
+        );
+      }
+
       // Score each candidate
       const scoredCandidates = await Promise.all(
         enrichedCandidates.map(async (content) => {
