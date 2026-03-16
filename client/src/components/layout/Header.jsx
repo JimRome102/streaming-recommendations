@@ -14,22 +14,10 @@ const Header = () => {
 
           <nav className="flex gap-6">
             <Link
-              to="/"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Home
-            </Link>
-            <Link
               to="/rate"
               className="text-gray-300 hover:text-white transition-colors"
             >
               Rate Movies
-            </Link>
-            <Link
-              to="/preferences"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Preferences
             </Link>
             <Link
               to="/recommendations"

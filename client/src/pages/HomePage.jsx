@@ -15,21 +15,22 @@ const HomePage = () => {
       <div className="max-w-4xl mx-auto text-center">
         {/* Hero Section */}
         <h1 className="text-5xl md:text-6xl font-bold mb-6">
-          Discover Your Next
-          <span className="text-red-600"> Favorite Show</span>
+          Smarter Streaming Recommendations
+          <span className="text-red-600"> Across Every Platform</span>
         </h1>
 
-        <p className="text-xl text-gray-400 mb-12">
-          Get personalized movie and TV recommendations across Netflix, Hulu, and Prime Video
-          using advanced scoring that combines critic reviews, user ratings, and social trends.
+        <p className="text-xl text-gray-300 mb-3 leading-relaxed">
+          Personalized movie and TV recommendations across your streaming services.
+        </p>
+        <p className="text-lg text-gray-400 mb-12">
+          Powered by critic reviews, user ratings, and social trends.
         </p>
 
-        {/* Status Card */}
-        <div className="card mb-6">
-          <h2 className="text-2xl font-semibold mb-4">Get Started</h2>
-
+        {/* CTA Section */}
+        <div className="card mb-12">
           {!hasEnoughRatings ? (
             <div>
+              <h2 className="text-2xl font-semibold mb-4">Get Started</h2>
               <p className="text-gray-400 mb-4">
                 Rate at least 5 movies or shows to unlock personalized recommendations
               </p>
@@ -38,7 +39,7 @@ const HomePage = () => {
               </div>
               <div className="flex justify-center gap-4">
                 <Link to="/rate" className="btn-primary">
-                  Start Rating Movies
+                  Rate Movies
                 </Link>
                 <Link to="/preferences" className="btn-secondary">
                   Set Preferences
@@ -47,89 +48,94 @@ const HomePage = () => {
             </div>
           ) : (
             <div>
-              <p className="text-green-500 mb-4 text-lg">
-                You've rated {ratingsCount} items - ready for recommendations!
+              <h2 className="text-2xl font-semibold mb-4">You're All Set!</h2>
+              <p className="text-green-500 mb-6 text-lg">
+                You've rated {ratingsCount} items
               </p>
-              <Link to="/recommendations" className="btn-primary inline-block">
-                View Recommendations
-              </Link>
+              <div className="flex justify-center gap-4">
+                <Link to="/recommendations" className="btn-primary inline-block">
+                  Get Recommendations
+                </Link>
+                <Link to="/rate" className="btn-secondary inline-block">
+                  Rate More Movies
+                </Link>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Features - Static Info Cards */}
-        <div className="grid md:grid-cols-3 gap-8 mt-8">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-900/30 via-gray-900 to-gray-900 p-8 border-2 border-purple-500/20">
+        {/* How It Works */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold mb-4">How Our Recommendations Work</h2>
+          <p className="text-gray-400 mb-8">
+            We combine multiple signals to find content you'll love
+          </p>
+          <div className="grid md:grid-cols-4 gap-4 text-sm">
+            <div className="card p-4">
+              <div className="text-2xl font-bold text-purple-400 mb-2">25%</div>
+              <div className="font-semibold mb-1">Critics</div>
+              <div className="text-gray-400">Rotten Tomatoes, Metacritic</div>
+            </div>
+            <div className="card p-4">
+              <div className="text-2xl font-bold text-blue-400 mb-2">25%</div>
+              <div className="font-semibold mb-1">User Ratings</div>
+              <div className="text-gray-400">IMDb, TMDb community</div>
+            </div>
+            <div className="card p-4">
+              <div className="text-2xl font-bold text-green-400 mb-2">20%</div>
+              <div className="font-semibold mb-1">Social Trends</div>
+              <div className="text-gray-400">Reddit discussions</div>
+            </div>
+            <div className="card p-4">
+              <div className="text-2xl font-bold text-red-400 mb-2">30%</div>
+              <div className="font-semibold mb-1">Your Taste</div>
+              <div className="text-gray-400">Based on your ratings</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Features - User Outcomes */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-900/20 via-gray-900 to-gray-900 p-8 border border-purple-500/20">
             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
             <div className="relative">
-              <div className="text-6xl mb-6">🎬</div>
-              <h3 className="text-2xl font-bold mb-4 text-white">Smart Algorithm</h3>
-              <div className="space-y-2 text-sm text-gray-300">
-                <div className="flex items-center gap-2">
-                  <span className="text-purple-400">•</span>
-                  <span>25% Critics (RT, Metacritic)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-purple-400">•</span>
-                  <span>25% User Ratings (IMDb, TMDb)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-purple-400">•</span>
-                  <span>20% Social Trends (Reddit)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-purple-400">•</span>
-                  <span>30% Your Personal Taste</span>
-                </div>
-              </div>
+              <div className="text-5xl mb-4">🎬</div>
+              <h3 className="text-xl font-bold mb-3 text-white">Smarter Recommendations</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Our algorithm combines critic reviews, audience ratings, and social trends to surface quality content.
+              </p>
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-900/30 via-gray-900 to-gray-900 p-8 border-2 border-blue-500/20">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-900/20 via-gray-900 to-gray-900 p-8 border border-blue-500/20">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
             <div className="relative">
-              <div className="text-6xl mb-6">📺</div>
-              <h3 className="text-2xl font-bold mb-4 text-white">8 Streaming Platforms</h3>
-              <div className="flex flex-wrap gap-2 text-xs">
-                <span className="px-3 py-1 bg-red-600/80 rounded-full">Netflix</span>
-                <span className="px-3 py-1 bg-green-600/80 rounded-full">Hulu</span>
-                <span className="px-3 py-1 bg-blue-600/80 rounded-full">Prime</span>
-                <span className="px-3 py-1 bg-purple-600/80 rounded-full">Max</span>
-                <span className="px-3 py-1 bg-blue-500/80 rounded-full">Disney+</span>
-                <span className="px-3 py-1 bg-blue-700/80 rounded-full">Paramount+</span>
-                <span className="px-3 py-1 bg-red-700/80 rounded-full">Showtime</span>
-                <span className="px-3 py-1 bg-gray-700/80 rounded-full">Peacock</span>
-              </div>
-              <p className="text-gray-400 text-sm mt-4">
-                All your streaming services in one place
+              <div className="text-5xl mb-4">📺</div>
+              <h3 className="text-xl font-bold mb-3 text-white">All Your Streaming Services</h3>
+              <p className="text-gray-300 text-sm leading-relaxed mb-3">
+                Find recommendations across Netflix, Hulu, Prime Video, Max, Disney+, Paramount+, Showtime, and Peacock.
               </p>
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-900/30 via-gray-900 to-gray-900 p-8 border-2 border-green-500/20">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-900/20 via-gray-900 to-gray-900 p-8 border border-green-500/20">
             <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl"></div>
             <div className="relative">
-              <div className="text-6xl mb-6">🎯</div>
-              <h3 className="text-2xl font-bold mb-4 text-white">Diverse Selection</h3>
-              <p className="text-gray-300 text-sm leading-relaxed mb-4">
-                Our algorithm ensures variety in every recommendation set:
+              <div className="text-5xl mb-4">🎯</div>
+              <h3 className="text-xl font-bold mb-3 text-white">No More Endless Scrolling</h3>
+              <p className="text-gray-300 text-sm leading-relaxed">
+                Balanced recommendations across genres and platforms. Discover hidden gems without decision fatigue.
               </p>
-              <div className="space-y-2 text-sm text-gray-300">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span>
-                  <span>Max 3 items per genre</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span>
-                  <span>Balanced across platforms</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span>
-                  <span>No duplicates for 30 days</span>
-                </div>
-              </div>
             </div>
           </div>
+        </div>
+
+        {/* Why I Built This */}
+        <div className="card bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-700/50 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold mb-4">Why I Built This</h2>
+          <p className="text-gray-300 leading-relaxed">
+            I built StreamPick to explore how recommendation systems can combine critic signals, audience behavior, and personal taste to help people find better content faster. This project demonstrates full-stack development with external API integration, composite scoring algorithms, and real-world caching strategies.
+          </p>
         </div>
       </div>
     </div>
