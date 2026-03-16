@@ -18,6 +18,7 @@ const RecommendationsPage = () => {
     isLoading,
     error,
     refetch,
+    isFetching,
   } = useQuery({
     queryKey: ['recommendations', userId, selectedPlatforms.join(',')],
     queryFn: async () => {
@@ -33,8 +34,7 @@ const RecommendationsPage = () => {
       return response.data.recommendations;
     },
     enabled: ratingsCount >= 5,
-    keepPreviousData: true, // Keep showing old data while fetching new data
-    staleTime: 30000, // Consider data fresh for 30 seconds
+    refetchOnWindowFocus: false,
   });
 
   const handlePlatformToggle = (platform) => {
@@ -78,8 +78,12 @@ const RecommendationsPage = () => {
             Personalized picks based on your ratings and preferences
           </p>
         </div>
-        <button onClick={handleRefresh} className="btn-secondary">
-          Refresh
+        <button
+          onClick={handleRefresh}
+          className="btn-secondary"
+          disabled={isFetching}
+        >
+          {isFetching ? 'Refreshing...' : 'Refresh'}
         </button>
       </div>
 
