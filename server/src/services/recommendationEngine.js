@@ -14,75 +14,104 @@ const WEIGHTS = {
 class RecommendationEngine {
   // Generate personalized recommendations
   async generateRecommendations(userId, options = {}) {
-    const {
-      count = 20,
-      platforms = ['netflix', 'hulu', 'prime'],
-      minRating = 6.0,
-      excludeGenres = [],
-    } = options;
+    try {
+      const {
+        count = 20,
+        platforms = ['netflix', 'hulu', 'prime'],
+        minRating = 6.0,
+        excludeGenres = [],
+      } = options;
 
-    // Get user preferences and ratings
-    const [preferences, userRatings] = await Promise.all([
-      this.getUserPreferences(userId),
-      this.getUserRatings(userId),
-    ]);
+      console.log(`🎬 Generating recommendations for user: ${userId}`);
 
-    // Ensure user has rated enough content
-    if (userRatings.length < 5) {
-      throw new Error('Please rate at least 5 movies/shows before getting recommendations');
+      // Get user preferences and ratings
+      const [preferences, userRatings] = await Promise.all([
+        this.getUserPreferences(userId),
+        this.getUserRatings(userId),
+      ]);
+
+      console.log(`📊 User has ${userRatings.length} ratings`);
+
+      // Ensure user has rated enough content
+      if (userRatings.length < 5) {
+        throw new Error('Please rate at least 5 movies/shows before getting recommendations');
+      }
+
+      // Get genre preferences from user ratings if not set
+      const preferredGenres = preferences?.preferredGenres?.length > 0
+        ? preferences.preferredGenres
+        : this.extractPreferredGenres(userRatings);
+
+      console.log(`📊 Preferred genres: ${preferredGenres.join(', ')}`);
+
+      // Get recommendation history to avoid duplicates
+      const recentRecommendations = await this.getRecentRecommendations(userId, 30);
+      const excludedTmdbIds = new Set([
+        ...userRatings.map(r => r.tmdbId),
+        ...recentRecommendations.map(r => r.tmdbId),
+      ]);
+
+      console.log(`📊 Excluding ${excludedTmdbIds.size} already seen/rated items`);
+
+      // Discover candidate content
+      const candidates = await this.discoverCandidates(preferredGenres, excludeGenres, platforms);
+      console.log(`📊 Discovered ${candidates.length} candidates`);
+
+      // Filter out already seen/recommended content
+      const filteredCandidates = candidates.filter(c => !excludedTmdbIds.has(c.tmdbId));
+      console.log(`📊 After filtering duplicates: ${filteredCandidates.length} candidates`);
+
+      if (filteredCandidates.length === 0) {
+        console.warn('⚠️ No candidates after filtering - returning empty recommendations');
+        return [];
+      }
+
+      // Fetch full metadata for candidates
+      const enrichedCandidates = await cacheService.batchGetContent(filteredCandidates);
+      console.log(`📊 Enriched with metadata: ${enrichedCandidates.length} candidates`);
+
+      if (enrichedCandidates.length === 0) {
+        console.warn('⚠️ No enriched candidates - returning empty recommendations');
+        return [];
+      }
+
+      // Score each candidate
+      const scoredCandidates = await Promise.all(
+        enrichedCandidates.map(async (content) => {
+          const score = await this.calculateCompositeScore(content, userRatings, preferredGenres);
+          return { ...content, score };
+        })
+      );
+      console.log(`📊 Scored candidates: ${scoredCandidates.length}`);
+
+      // Filter by minimum rating (be lenient with platform availability for now)
+      const qualified = scoredCandidates.filter(c => {
+        const avgRating = this.getAverageRating(c);
+        const hasRating = avgRating >= minRating;
+        // TODO: Re-enable strict platform filtering once Watchmode API coverage improves
+        // For now, show content even without confirmed streaming availability
+        return hasRating;
+      });
+      console.log(`📊 Qualified after rating/platform filter: ${qualified.length}`);
+
+      if (qualified.length === 0) {
+        console.warn('⚠️ No qualified candidates - returning empty recommendations');
+        return [];
+      }
+
+      // Apply diversity filtering
+      const diverseRecommendations = this.applyDiversityFilter(qualified, count);
+      console.log(`📊 Final recommendations after diversity: ${diverseRecommendations.length}`);
+
+      // Record recommendations
+      await this.recordRecommendations(userId, diverseRecommendations);
+
+      return diverseRecommendations;
+    } catch (error) {
+      console.error('❌ Error in generateRecommendations:', error.message);
+      console.error('Stack:', error.stack);
+      throw error;
     }
-
-    // Get genre preferences from user ratings if not set
-    const preferredGenres = preferences?.preferredGenres?.length > 0
-      ? preferences.preferredGenres
-      : this.extractPreferredGenres(userRatings);
-
-    // Get recommendation history to avoid duplicates
-    const recentRecommendations = await this.getRecentRecommendations(userId, 30);
-    const excludedTmdbIds = new Set([
-      ...userRatings.map(r => r.tmdbId),
-      ...recentRecommendations.map(r => r.tmdbId),
-    ]);
-
-    // Discover candidate content
-    const candidates = await this.discoverCandidates(preferredGenres, excludeGenres, platforms);
-    console.log(`📊 Discovered ${candidates.length} candidates`);
-
-    // Filter out already seen/recommended content
-    const filteredCandidates = candidates.filter(c => !excludedTmdbIds.has(c.tmdbId));
-    console.log(`📊 After filtering duplicates: ${filteredCandidates.length} candidates`);
-
-    // Fetch full metadata for candidates
-    const enrichedCandidates = await cacheService.batchGetContent(filteredCandidates);
-    console.log(`📊 Enriched with metadata: ${enrichedCandidates.length} candidates`);
-
-    // Score each candidate
-    const scoredCandidates = await Promise.all(
-      enrichedCandidates.map(async (content) => {
-        const score = await this.calculateCompositeScore(content, userRatings, preferredGenres);
-        return { ...content, score };
-      })
-    );
-    console.log(`📊 Scored candidates: ${scoredCandidates.length}`);
-
-    // Filter by minimum rating (be lenient with platform availability for now)
-    const qualified = scoredCandidates.filter(c => {
-      const avgRating = this.getAverageRating(c);
-      const hasRating = avgRating >= minRating;
-      // TODO: Re-enable strict platform filtering once Watchmode API coverage improves
-      // For now, show content even without confirmed streaming availability
-      return hasRating;
-    });
-    console.log(`📊 Qualified after rating/platform filter: ${qualified.length}`);
-
-    // Apply diversity filtering
-    const diverseRecommendations = this.applyDiversityFilter(qualified, count);
-    console.log(`📊 Final recommendations after diversity: ${diverseRecommendations.length}`);
-
-    // Record recommendations
-    await this.recordRecommendations(userId, diverseRecommendations);
-
-    return diverseRecommendations;
   }
 
   // Calculate weighted composite score (0-100)

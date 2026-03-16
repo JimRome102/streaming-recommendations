@@ -28,7 +28,8 @@ const recommendationController = {
         platforms,
       });
     } catch (error) {
-      console.error('Get recommendations error:', error);
+      console.error('Get recommendations error:', error.message);
+      console.error('Error stack:', error.stack);
 
       if (error.message.includes('rate at least')) {
         return res.status(400).json({ error: error.message });
