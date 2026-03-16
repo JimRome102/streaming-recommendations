@@ -9,6 +9,7 @@ const moviesRouter = require('./routes/movies');
 const ratingsRouter = require('./routes/ratings');
 const preferencesRouter = require('./routes/preferences');
 const recommendationsRouter = require('./routes/recommendations');
+const debugRouter = require('./routes/debug');
 
 const app = express();
 
@@ -38,6 +39,7 @@ app.use('/api/movies', moviesRouter);
 app.use('/api/ratings', ratingsRouter);
 app.use('/api/preferences', preferencesRouter);
 app.use('/api/recommendations', recommendationsRouter);
+app.use('/api/debug', debugRouter);
 
 // Error handler (must be last)
 app.use(errorHandler);
