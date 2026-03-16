@@ -30,15 +30,24 @@ class CacheService {
         ? await tmdbService.getMovieDetails(tmdbId)
         : await tmdbService.getTVDetails(tmdbId);
 
-      // Fetch streaming availability
-      const streaming = tmdbData.imdbId
-        ? await watchmodeService.getStreamingAvailabilityByImdbId(tmdbData.imdbId)
-        : await watchmodeService.getStreamingAvailabilityByTitle(tmdbData.title, mediaType);
+      // Try to fetch streaming availability (non-blocking)
+      let streaming = null;
+      try {
+        streaming = tmdbData.imdbId
+          ? await watchmodeService.getStreamingAvailabilityByImdbId(tmdbData.imdbId)
+          : await watchmodeService.getStreamingAvailabilityByTitle(tmdbData.title, mediaType);
+      } catch (err) {
+        console.warn(`Watchmode API failed for ${tmdbId}, continuing without streaming data`);
+      }
 
-      // Fetch additional ratings (IMDb, RT)
+      // Try to fetch additional ratings (non-blocking)
       let ratings = { imdbRating: null, rtScore: null };
       if (tmdbData.imdbId) {
-        ratings = await omdbService.getRatings(tmdbData.imdbId);
+        try {
+          ratings = await omdbService.getRatings(tmdbData.imdbId);
+        } catch (err) {
+          console.warn(`OMDb API failed for ${tmdbId}, continuing without IMDb/RT data`);
+        }
       }
 
       // Prepare data for database
