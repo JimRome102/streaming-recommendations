@@ -10,6 +10,7 @@ const ratingsRouter = require('./routes/ratings');
 const preferencesRouter = require('./routes/preferences');
 const recommendationsRouter = require('./routes/recommendations');
 const debugRouter = require('./routes/debug');
+const adminRouter = require('./routes/admin');
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api/ratings', ratingsRouter);
 app.use('/api/preferences', preferencesRouter);
 app.use('/api/recommendations', recommendationsRouter);
 app.use('/api/debug', debugRouter);
+app.use('/api/admin', adminRouter);
 
 // Error handler (must be last)
 app.use(errorHandler);
