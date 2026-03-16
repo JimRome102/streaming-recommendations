@@ -57,6 +57,28 @@ const recommendationController = {
       res.status(500).json({ error: 'Failed to hide recommendation' });
     }
   },
+
+  // Clear recommendation history (for testing/reset)
+  async clearHistory(req, res) {
+    try {
+      const { userId } = req.query;
+
+      if (!userId) {
+        return res.status(400).json({ error: 'userId is required' });
+      }
+
+      const count = await recommendationEngine.clearRecommendationHistory(userId);
+
+      res.json({
+        success: true,
+        message: `Cleared ${count} recommendation history entries`,
+        count
+      });
+    } catch (error) {
+      console.error('Clear history error:', error);
+      res.status(500).json({ error: 'Failed to clear recommendation history' });
+    }
+  },
 };
 
 module.exports = recommendationController;

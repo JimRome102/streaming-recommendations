@@ -421,6 +421,14 @@ class RecommendationEngine {
       data: { hidden: true },
     });
   }
+
+  // Clear recommendation history for a user
+  async clearRecommendationHistory(userId) {
+    const result = await prisma.recommendationHistory.deleteMany({
+      where: { userId },
+    });
+    return result.count;
+  }
 }
 
 module.exports = new RecommendationEngine();
