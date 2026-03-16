@@ -84,15 +84,65 @@ class CacheService {
     }
   }
 
-  // Batch fetch and cache multiple items
+  // Batch fetch and cache multiple items with rate limiting
   async batchGetContent(items) {
-    const results = await Promise.allSettled(
-      items.map(item => this.getContent(item.tmdbId, item.mediaType))
-    );
+    // First, check which items are already in cache
+    const tmdbIds = items.map(item => item.tmdbId);
+    const cached = await prisma.cachedContent.findMany({
+      where: {
+        tmdbId: { in: tmdbIds },
+      },
+    });
 
-    return results
-      .filter(r => r.status === 'fulfilled')
-      .map(r => r.value);
+    console.log(`💾 Found ${cached.length}/${items.length} items in cache`);
+
+    // Separate cached from items that need fetching
+    const cachedMap = new Map(cached.map(c => [c.tmdbId, c]));
+    const itemsToFetch = items.filter(item => {
+      const cachedItem = cachedMap.get(item.tmdbId);
+      // Only fetch if not cached or cache is old (>7 days)
+      return !cachedItem || !this.isCacheValid(cachedItem.updatedAt, 7);
+    });
+
+    console.log(`🔄 Need to fetch ${itemsToFetch.length} new/stale items`);
+
+    const allResults = [...cached.filter(c => this.isCacheValid(c.updatedAt, 7))];
+
+    // If nothing to fetch, return cached items
+    if (itemsToFetch.length === 0) {
+      return allResults;
+    }
+
+    // Batch fetch missing items with rate limiting
+    const BATCH_SIZE = 30; // Process 30 items at a time (under 40/10s limit)
+    const BATCH_DELAY = 10000; // 10 second delay between batches
+
+    for (let i = 0; i < itemsToFetch.length; i += BATCH_SIZE) {
+      const batch = itemsToFetch.slice(i, i + BATCH_SIZE);
+      console.log(`📦 Fetching batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(itemsToFetch.length / BATCH_SIZE)} (${batch.length} items)`);
+
+      const results = await Promise.allSettled(
+        batch.map(item => this.getContent(item.tmdbId, item.mediaType))
+      );
+
+      const fulfilled = results
+        .filter(r => r.status === 'fulfilled')
+        .map(r => r.value);
+
+      const rejected = results.filter(r => r.status === 'rejected').length;
+      console.log(`✅ Batch complete: ${fulfilled.length} succeeded, ${rejected} failed`);
+
+      allResults.push(...fulfilled);
+
+      // Delay before next batch (except for last batch)
+      if (i + BATCH_SIZE < itemsToFetch.length) {
+        console.log(`⏳ Waiting ${BATCH_DELAY / 1000}s before next batch to respect rate limits...`);
+        await new Promise(resolve => setTimeout(resolve, BATCH_DELAY));
+      }
+    }
+
+    console.log(`📊 Total available: ${allResults.length}/${items.length} items (${cached.length} from cache, ${allResults.length - cached.length} newly fetched)`);
+    return allResults;
   }
 
   // Update streaming availability for cached content
