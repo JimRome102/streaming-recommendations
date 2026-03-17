@@ -7,7 +7,7 @@ import PreferencesPage from './pages/PreferencesPage';
 import RecommendationsPage from './pages/RecommendationsPage';
 import RatingsFetcher from './components/common/RatingsFetcher';
 
-// Create React Query client
+// Create React Query client - v2.0
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
