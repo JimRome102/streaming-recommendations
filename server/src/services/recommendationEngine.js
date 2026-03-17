@@ -411,19 +411,13 @@ class RecommendationEngine {
 
   // Helper: Check if content is on specified platforms
   isOnPlatform(content, platforms) {
-    // If no streaming data available, allow it through
+    // If no streaming data available, allow it through (we don't know)
     if (!content.streamingPlatforms) return true;
 
     // Check if available on any of the requested platforms
     const isAvailable = platforms.some(p => content.streamingPlatforms[p] === true);
 
-    // If Watchmode returns all false (no data), also allow through
-    // This handles cases where the API doesn't have streaming info yet
-    const allFalse = Object.values(content.streamingPlatforms)
-      .filter(v => typeof v === 'boolean')
-      .every(v => v === false);
-
-    return isAvailable || allFalse;
+    return isAvailable;
   }
 
   // Helper: Get primary platform for diversity
