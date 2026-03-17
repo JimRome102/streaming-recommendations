@@ -381,14 +381,19 @@ class RecommendationEngine {
 
   // Helper: Extract preferred genres from user ratings
   async extractPreferredGenres(userRatings) {
+    console.log(`🎯 Extracting genres from ${userRatings.length} ratings`);
+
     // Get genres from highly-rated content (4-5 stars)
     const highlyRated = userRatings.filter(r => r.rating >= 4);
+    console.log(`🎯 Found ${highlyRated.length} highly-rated items (4+ stars)`);
 
     if (highlyRated.length === 0) {
       // If no highly-rated items, use all ratings
+      console.log(`🎯 No highly-rated items, using all ${userRatings.length} ratings`);
       const allRated = userRatings;
       if (allRated.length === 0) {
         // Fallback to popular genres
+        console.log(`🎯 No ratings at all, using fallback genres`);
         return [18, 28, 35, 80, 878, 12, 53, 9648];
       }
       return await this.extractGenresFromRatings(allRated);
@@ -399,23 +404,34 @@ class RecommendationEngine {
 
   // Helper: Extract genre IDs from ratings
   async extractGenresFromRatings(ratings) {
+    console.log(`🎯 Extracting genres from ${ratings.length} items...`);
     const genreCounts = new Map();
+    let successCount = 0;
+    let failCount = 0;
 
     // Fetch cached content for each rated item to get genres
     for (const rating of ratings) {
       try {
         const content = await cacheService.getContent(rating.tmdbId, rating.mediaType);
         if (content && content.genres) {
+          console.log(`🎯 Found genres for "${rating.title}": ${content.genres.join(', ')}`);
           // Count each genre
           content.genres.forEach(genreId => {
             genreCounts.set(genreId, (genreCounts.get(genreId) || 0) + 1);
           });
+          successCount++;
+        } else {
+          console.warn(`🎯 No genres found for "${rating.title}" (tmdbId: ${rating.tmdbId})`);
+          failCount++;
         }
       } catch (err) {
         // Skip if can't fetch content
-        console.warn(`Could not fetch genres for tmdbId ${rating.tmdbId}`);
+        console.warn(`🎯 Could not fetch genres for tmdbId ${rating.tmdbId}: ${err.message}`);
+        failCount++;
       }
     }
+
+    console.log(`🎯 Genre extraction: ${successCount} succeeded, ${failCount} failed`);
 
     // Sort by frequency and return top 8 genres
     const sortedGenres = Array.from(genreCounts.entries())
@@ -423,8 +439,11 @@ class RecommendationEngine {
       .map(([genreId]) => genreId)
       .slice(0, 8);
 
+    console.log(`🎯 Extracted genres: ${sortedGenres.join(', ')}`);
+
     // If we got no genres, fallback
     if (sortedGenres.length === 0) {
+      console.log(`🎯 No genres extracted, using fallback`);
       return [18, 28, 35, 80, 878, 12, 53, 9648];
     }
 
