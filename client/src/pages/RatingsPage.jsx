@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import { movieApi, ratingApi } from '../services/api';
 import useUserStore from '../store/userStore';
 import Loader from '../components/common/Loader';
@@ -137,6 +138,35 @@ const RatingsPage = () => {
       {ratings.length > 0 && (
         <div>
           <h2 className="text-2xl font-semibold mb-4">Your Ratings ({ratings.length})</h2>
+
+          {/* Progress CTA */}
+          {ratings.length >= 5 ? (
+            <div className="card bg-gradient-to-r from-green-900/30 to-green-800/20 border-green-600/40 mb-6 text-center">
+              <div className="flex flex-col items-center gap-4">
+                <div>
+                  <div className="text-green-500 text-lg font-semibold mb-2">
+                    ✓ You've rated {ratings.length} items!
+                  </div>
+                  <p className="text-gray-300">
+                    Ready to see your personalized recommendations?
+                  </p>
+                </div>
+                <Link to="/recommendations" className="btn-primary inline-block">
+                  Get My Recommendations
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="card bg-gradient-to-r from-red-900/20 to-red-800/10 border-red-600/30 mb-6 text-center">
+              <div className="text-2xl font-bold text-red-500 mb-2">
+                {ratings.length} / 5 ratings
+              </div>
+              <p className="text-gray-400">
+                Rate {5 - ratings.length} more {5 - ratings.length === 1 ? 'item' : 'items'} to unlock personalized recommendations
+              </p>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             {ratings.map((rating) => (
               <div key={rating.id} className="card relative">
