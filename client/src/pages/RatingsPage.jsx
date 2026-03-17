@@ -11,6 +11,7 @@ const RatingsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [justRated, setJustRated] = useState(null); // Track recently rated movie
 
   const userId = useUserStore((state) => state.userId);
   const ratings = useUserStore((state) => state.ratings);
@@ -83,6 +84,10 @@ const RatingsPage = () => {
     setSearchResults((prev) =>
       prev.map((m) => (m.tmdbId === movie.tmdbId ? { ...m, userRating: rating } : m))
     );
+
+    // Show success message
+    setJustRated(movie.title);
+    setTimeout(() => setJustRated(null), 3000);
   };
 
   // Create ratings map for quick lookup
@@ -113,6 +118,25 @@ const RatingsPage = () => {
           </button>
         </form>
       </div>
+
+      {/* Success Message after rating */}
+      {justRated && (
+        <div className="mb-6 p-4 bg-green-900/30 border border-green-600/40 rounded-lg flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">✓</span>
+            <div>
+              <div className="font-semibold text-green-400">Rated: {justRated}</div>
+              <div className="text-sm text-gray-400">
+                {ratings.length >= 5 ? (
+                  <span>Ready for recommendations! Keep rating or <Link to="/recommendations" className="text-green-400 underline">see your picks</Link></span>
+                ) : (
+                  <span>Rate {5 - ratings.length} more to unlock recommendations</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Search Results */}
       {isSearching && <Loader />}
