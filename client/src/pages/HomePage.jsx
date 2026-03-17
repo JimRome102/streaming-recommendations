@@ -15,19 +15,19 @@ const HomePage = () => {
       <div className="max-w-4xl mx-auto text-center">
         {/* Hero Section */}
         <h1 className="text-5xl md:text-6xl font-bold mb-6">
-          Composite Scoring for
-          <span className="text-red-600"> Personalized Recommendations</span>
+          Better Movie Recommendations
+          <span className="text-red-600"> Using Math, Not Magic</span>
         </h1>
 
         <p className="text-xl text-gray-300 mb-3 leading-relaxed">
-          Exploring how multiple data signals combine to surface quality content you'll actually enjoy.
+          I built this to see if combining critic reviews, user ratings, Reddit buzz, and your personal taste could actually find good stuff to watch.
         </p>
         <p className="text-lg text-gray-400 mb-2">
-          Weighted algorithm: 25% critics + 25% user ratings + 20% social trends + 30% your taste
+          The algorithm weighs: 25% critics + 25% IMDb/TMDb + 20% social trends + 30% your ratings
         </p>
         <p className="text-sm text-gray-500 mb-12">
           <span className="inline-block px-3 py-1 bg-gray-800/50 rounded-full border border-gray-700">
-            🔬 Prototype for learning &amp; experimentation
+            🔬 Learning project, not a real product
           </span>
         </p>
 
@@ -71,9 +71,9 @@ const HomePage = () => {
 
         {/* How It Works */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-4">How Our Recommendations Work</h2>
+          <h2 className="text-3xl font-bold mb-4">How It Works</h2>
           <p className="text-gray-400 mb-8">
-            We combine multiple signals to find content you'll love
+            Four different data sources, weighted and combined
           </p>
           <div className="grid md:grid-cols-4 gap-4 text-sm">
             <div className="card p-4">
@@ -105,9 +105,9 @@ const HomePage = () => {
             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
             <div className="relative">
               <div className="text-5xl mb-4">🧮</div>
-              <h3 className="text-xl font-bold mb-3 text-white">Composite Scoring Algorithm</h3>
+              <h3 className="text-xl font-bold mb-3 text-white">Weighted Scoring</h3>
               <p className="text-gray-300 text-sm leading-relaxed">
-                Weighted scoring across 4 data sources: critics (RT/Metacritic), user ratings (IMDb/TMDb), social trends (Reddit), and your personal preferences.
+                Combines critic reviews, IMDb ratings, Reddit buzz, and your personal ratings into one score. Different weights for each source based on what actually seems to work.
               </p>
             </div>
           </div>
@@ -116,9 +116,9 @@ const HomePage = () => {
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
             <div className="relative">
               <div className="text-5xl mb-4">🎯</div>
-              <h3 className="text-xl font-bold mb-3 text-white">Dynamic Personalization</h3>
+              <h3 className="text-xl font-bold mb-3 text-white">Actual Personalization</h3>
               <p className="text-gray-300 text-sm leading-relaxed mb-3">
-                Genre preferences extracted from YOUR highly-rated content. Different users get completely different recommendations.
+                Looks at what you rated highly, extracts the genres, and weights those in your results. Two people rating different movies get completely different recommendations.
               </p>
             </div>
           </div>
@@ -127,9 +127,9 @@ const HomePage = () => {
             <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl"></div>
             <div className="relative">
               <div className="text-5xl mb-4">⚡</div>
-              <h3 className="text-xl font-bold mb-3 text-white">Full-Stack Architecture</h3>
+              <h3 className="text-xl font-bold mb-3 text-white">Full-Stack Build</h3>
               <p className="text-gray-300 text-sm leading-relaxed">
-                React + Node.js + PostgreSQL + Redis caching. Real-time API integration with TMDb, Watchmode, and OMDb.
+                React frontend, Node.js backend, PostgreSQL database, Redis caching. Pulls from TMDb, Watchmode, and OMDb APIs. Deployed on Vercel + Render.
               </p>
             </div>
           </div>
@@ -139,13 +139,13 @@ const HomePage = () => {
         <div className="card bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-700/50 max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold mb-4">Why I Built This</h2>
           <p className="text-gray-300 leading-relaxed mb-4">
-            I built StreamPick to explore how different data signals can be weighted and combined to create personalized recommendations. The challenge was building a scoring algorithm that balances objective metrics (critics, user ratings) with subjective preferences (your genre tastes) while maintaining diversity in results.
+            I wanted to see if I could build something better than "because you watched X, try Y." The interesting part was figuring out how to balance objective data (what critics think, what's trending) with subjective stuff (your actual taste) without just recommending the same popular shows to everyone.
           </p>
           <p className="text-gray-400 text-sm leading-relaxed">
-            <strong>What I learned:</strong> Full-stack development (React + Node.js + PostgreSQL), external API integration (TMDb, Watchmode, OMDb), caching strategies (Redis + database), composite scoring algorithms, and personalization engines that extract preferences from user behavior.
+            <strong>What I learned:</strong> Building a full-stack app (React + Node.js + PostgreSQL), integrating multiple APIs (TMDb, Watchmode, OMDb, Reddit), caching strategies with Redis, designing scoring algorithms, and making a personalization engine that actually extracts genre preferences from your ratings instead of using a static profile.
           </p>
           <p className="text-gray-500 text-xs mt-4">
-            Note: This is a learning prototype. Streaming availability data may be incomplete or outdated. The focus is on the recommendation algorithm, not production-ready streaming integrations.
+            Note: This is a learning project. The streaming platform data is spotty and the recommendations aren't perfect. The point was to learn how this stuff works, not to replace Netflix.
           </p>
         </div>
       </div>
