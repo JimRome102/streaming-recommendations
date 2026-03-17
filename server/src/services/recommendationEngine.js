@@ -41,7 +41,7 @@ class RecommendationEngine {
       // Get genre preferences from user ratings if not set
       const preferredGenres = preferences?.preferredGenres?.length > 0
         ? preferences.preferredGenres
-        : this.extractPreferredGenres(userRatings);
+        : await this.extractPreferredGenres(userRatings);
 
       console.log(`📊 Preferred genres: ${preferredGenres.join(', ')}`);
 
@@ -380,21 +380,55 @@ class RecommendationEngine {
   }
 
   // Helper: Extract preferred genres from user ratings
-  extractPreferredGenres(userRatings) {
-    // For MVP: Return most popular genres to ensure broad discovery
-    // TODO: In future, fetch actual genres from rated content via TMDb API
-    return [
-      18, // Drama (most common)
-      28, // Action
-      35, // Comedy
-      80, // Crime
-      878, // Science Fiction
-      12, // Adventure
-      53, // Thriller
-      9648, // Mystery
-      10751, // Family
-      16, // Animation
-    ];
+  async extractPreferredGenres(userRatings) {
+    // Get genres from highly-rated content (4-5 stars)
+    const highlyRated = userRatings.filter(r => r.rating >= 4);
+
+    if (highlyRated.length === 0) {
+      // If no highly-rated items, use all ratings
+      const allRated = userRatings;
+      if (allRated.length === 0) {
+        // Fallback to popular genres
+        return [18, 28, 35, 80, 878, 12, 53, 9648];
+      }
+      return await this.extractGenresFromRatings(allRated);
+    }
+
+    return await this.extractGenresFromRatings(highlyRated);
+  }
+
+  // Helper: Extract genre IDs from ratings
+  async extractGenresFromRatings(ratings) {
+    const genreCounts = new Map();
+
+    // Fetch cached content for each rated item to get genres
+    for (const rating of ratings) {
+      try {
+        const content = await cacheService.getContent(rating.tmdbId, rating.mediaType);
+        if (content && content.genres) {
+          // Count each genre
+          content.genres.forEach(genreId => {
+            genreCounts.set(genreId, (genreCounts.get(genreId) || 0) + 1);
+          });
+        }
+      } catch (err) {
+        // Skip if can't fetch content
+        console.warn(`Could not fetch genres for tmdbId ${rating.tmdbId}`);
+      }
+    }
+
+    // Sort by frequency and return top 8 genres
+    const sortedGenres = Array.from(genreCounts.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([genreId]) => genreId)
+      .slice(0, 8);
+
+    // If we got no genres, fallback
+    if (sortedGenres.length === 0) {
+      return [18, 28, 35, 80, 878, 12, 53, 9648];
+    }
+
+    return sortedGenres;
   }
 
   // Helper: Get average rating from all sources
