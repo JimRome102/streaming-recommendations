@@ -4,6 +4,7 @@ import { movieApi, ratingApi } from '../services/api';
 import useUserStore from '../store/userStore';
 import Loader from '../components/common/Loader';
 import MovieCard from '../components/movies/MovieCard';
+import StarRating from '../components/common/StarRating';
 
 const RatingsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,6 +32,22 @@ const RatingsPage = () => {
     mutationFn: (ratingData) => ratingApi.create(ratingData),
     onSuccess: (response) => {
       addRating(response.data);
+      queryClient.invalidateQueries(['ratings', userId]);
+    },
+  });
+
+  // Update rating mutation
+  const updateRatingMutation = useMutation({
+    mutationFn: ({ id, rating }) => ratingApi.update(id, { rating }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['ratings', userId]);
+    },
+  });
+
+  // Delete rating mutation
+  const deleteRatingMutation = useMutation({
+    mutationFn: (id) => ratingApi.delete(id),
+    onSuccess: () => {
       queryClient.invalidateQueries(['ratings', userId]);
     },
   });
@@ -122,14 +139,20 @@ const RatingsPage = () => {
           <h2 className="text-2xl font-semibold mb-4">Your Ratings ({ratings.length})</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             {ratings.map((rating) => (
-              <div key={rating.id} className="card">
-                <h3 className="font-semibold mb-2 line-clamp-2">{rating.title}</h3>
-                <div className="flex items-center gap-2">
-                  <span className="text-yellow-400">
-                    {'★'.repeat(Math.round(rating.rating))}
-                  </span>
-                  <span className="text-gray-400">{rating.rating.toFixed(1)}</span>
-                </div>
+              <div key={rating.id} className="card relative">
+                <button
+                  onClick={() => deleteRatingMutation.mutate(rating.id)}
+                  className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors"
+                  title="Delete rating"
+                >
+                  ✕
+                </button>
+                <h3 className="font-semibold mb-3 line-clamp-2 pr-6">{rating.title}</h3>
+                <StarRating
+                  rating={rating.rating}
+                  onRate={(newRating) => updateRatingMutation.mutate({ id: rating.id, rating: newRating })}
+                  interactive={true}
+                />
               </div>
             ))}
           </div>
