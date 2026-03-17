@@ -22,18 +22,13 @@ const RecommendationsPage = () => {
   } = useQuery({
     queryKey: ['recommendations', userId, selectedPlatforms.join(',')],
     queryFn: async () => {
-      // Don't send empty platform list
-      const platformParam = selectedPlatforms.length > 0
-        ? selectedPlatforms.join(',')
-        : 'netflix,hulu,prime,hbo,disney,paramount,showtime,peacock';
-
       const response = await recommendationsApi.get(userId, {
         count: 20,
-        platform: platformParam,
+        platform: selectedPlatforms.join(','),
       });
       return response.data.recommendations;
     },
-    enabled: ratingsCount >= 5,
+    enabled: ratingsCount >= 5 && selectedPlatforms.length > 0,
     refetchOnWindowFocus: false,
   });
 
@@ -117,8 +112,17 @@ const RecommendationsPage = () => {
         </div>
       )}
 
+      {/* No platforms selected */}
+      {selectedPlatforms.length === 0 && (
+        <div className="card text-center">
+          <p className="text-gray-400 mb-4">
+            Please select at least one streaming platform
+          </p>
+        </div>
+      )}
+
       {/* Empty State */}
-      {!isLoading && !error && (!recommendations || recommendations.length === 0) && (
+      {!isLoading && !error && selectedPlatforms.length > 0 && (!recommendations || recommendations.length === 0) && (
         <div className="card text-center">
           <p className="text-gray-400 mb-4">
             No recommendations found for the selected platforms
