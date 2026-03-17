@@ -15,15 +15,20 @@ const HomePage = () => {
       <div className="max-w-4xl mx-auto text-center">
         {/* Hero Section */}
         <h1 className="text-5xl md:text-6xl font-bold mb-6">
-          Smarter Streaming Recommendations
-          <span className="text-red-600"> Across Every Platform</span>
+          Composite Scoring for
+          <span className="text-red-600"> Personalized Recommendations</span>
         </h1>
 
         <p className="text-xl text-gray-300 mb-3 leading-relaxed">
-          Personalized movie and TV recommendations across your streaming services.
+          Exploring how multiple data signals combine to surface quality content you'll actually enjoy.
         </p>
-        <p className="text-lg text-gray-400 mb-12">
-          Powered by critic reviews, user ratings, and social trends.
+        <p className="text-lg text-gray-400 mb-2">
+          Weighted algorithm: 25% critics + 25% user ratings + 20% social trends + 30% your taste
+        </p>
+        <p className="text-sm text-gray-500 mb-12">
+          <span className="inline-block px-3 py-1 bg-gray-800/50 rounded-full border border-gray-700">
+            🔬 Prototype for learning &amp; experimentation
+          </span>
         </p>
 
         {/* CTA Section */}
@@ -99,10 +104,10 @@ const HomePage = () => {
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-900/20 via-gray-900 to-gray-900 p-8 border border-purple-500/20">
             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
             <div className="relative">
-              <div className="text-5xl mb-4">🎬</div>
-              <h3 className="text-xl font-bold mb-3 text-white">Smarter Recommendations</h3>
+              <div className="text-5xl mb-4">🧮</div>
+              <h3 className="text-xl font-bold mb-3 text-white">Composite Scoring Algorithm</h3>
               <p className="text-gray-300 text-sm leading-relaxed">
-                Our algorithm combines critic reviews, audience ratings, and social trends to surface quality content.
+                Weighted scoring across 4 data sources: critics (RT/Metacritic), user ratings (IMDb/TMDb), social trends (Reddit), and your personal preferences.
               </p>
             </div>
           </div>
@@ -110,10 +115,10 @@ const HomePage = () => {
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-900/20 via-gray-900 to-gray-900 p-8 border border-blue-500/20">
             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
             <div className="relative">
-              <div className="text-5xl mb-4">📺</div>
-              <h3 className="text-xl font-bold mb-3 text-white">All Your Streaming Services</h3>
+              <div className="text-5xl mb-4">🎯</div>
+              <h3 className="text-xl font-bold mb-3 text-white">Dynamic Personalization</h3>
               <p className="text-gray-300 text-sm leading-relaxed mb-3">
-                Find recommendations across Netflix, Hulu, Prime Video, Max, Disney+, Paramount+, Showtime, and Peacock.
+                Genre preferences extracted from YOUR highly-rated content. Different users get completely different recommendations.
               </p>
             </div>
           </div>
@@ -121,10 +126,10 @@ const HomePage = () => {
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-900/20 via-gray-900 to-gray-900 p-8 border border-green-500/20">
             <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-full blur-3xl"></div>
             <div className="relative">
-              <div className="text-5xl mb-4">🎯</div>
-              <h3 className="text-xl font-bold mb-3 text-white">No More Endless Scrolling</h3>
+              <div className="text-5xl mb-4">⚡</div>
+              <h3 className="text-xl font-bold mb-3 text-white">Full-Stack Architecture</h3>
               <p className="text-gray-300 text-sm leading-relaxed">
-                Balanced recommendations across genres and platforms. Discover hidden gems without decision fatigue.
+                React + Node.js + PostgreSQL + Redis caching. Real-time API integration with TMDb, Watchmode, and OMDb.
               </p>
             </div>
           </div>
@@ -133,8 +138,14 @@ const HomePage = () => {
         {/* Why I Built This */}
         <div className="card bg-gradient-to-br from-gray-800/50 to-gray-900/50 border-gray-700/50 max-w-3xl mx-auto">
           <h2 className="text-2xl font-bold mb-4">Why I Built This</h2>
-          <p className="text-gray-300 leading-relaxed">
-            I built StreamPick to explore how recommendation systems can combine critic signals, audience behavior, and personal taste to help people find better content faster. This project demonstrates full-stack development with external API integration, composite scoring algorithms, and real-world caching strategies.
+          <p className="text-gray-300 leading-relaxed mb-4">
+            I built StreamPick to explore how different data signals can be weighted and combined to create personalized recommendations. The challenge was building a scoring algorithm that balances objective metrics (critics, user ratings) with subjective preferences (your genre tastes) while maintaining diversity in results.
+          </p>
+          <p className="text-gray-400 text-sm leading-relaxed">
+            <strong>What I learned:</strong> Full-stack development (React + Node.js + PostgreSQL), external API integration (TMDb, Watchmode, OMDb), caching strategies (Redis + database), composite scoring algorithms, and personalization engines that extract preferences from user behavior.
+          </p>
+          <p className="text-gray-500 text-xs mt-4">
+            Note: This is a learning prototype. Streaming availability data may be incomplete or outdated. The focus is on the recommendation algorithm, not production-ready streaming integrations.
           </p>
         </div>
       </div>
