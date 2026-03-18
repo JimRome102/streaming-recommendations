@@ -54,7 +54,7 @@ The personalization works by analyzing what you rated highly, extracting the gen
 
 **Stack:** React + Node.js + PostgreSQL + Redis
 
-Learning project. Taught me scoring algorithm design, API integration with rate limits, caching strategies, and full-stack deployment.
+Taught me scoring algorithm design, API integration with rate limits, caching strategies, and full-stack deployment.
 
 Try it: https://client-ruddy-five.vercel.app/
 
