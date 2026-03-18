@@ -1,12 +1,10 @@
 # LinkedIn Post for StreamPick Project
 
-## Version 1: Full Post (Recommended)
+## Version 1: Shorter Post (Recommended - LinkedIn Character Limit)
 
-**I built a movie recommendation engine to see if I could do better than "because you watched X..."**
+**I built a movie and TV show recommendation engine to see if I could do better than "because you watched X..."**
 
-You know that feeling when you've scrolled through Netflix for 20 minutes and still can't find anything? The recommendations show you either stuff everyone's already seen or random suggestions that make no sense based on what you actually like.
-
-I wanted to see if combining multiple data sources—critic reviews, user ratings, social buzz, and your actual taste—could surface better options than the typical collaborative filtering approach.
+You know that feeling when you've scrolled through Netflix for 20 minutes and still can't find anything? I wanted to see if combining multiple data sources could surface better options.
 
 **How it works:**
 The algorithm scores every movie/show based on:
@@ -15,24 +13,20 @@ The algorithm scores every movie/show based on:
 • 20% social trends (Reddit buzz)
 • 30% your personal taste
 
-The interesting part was the personalization. Instead of asking users to pick genres upfront, the system looks at what you actually rated 4-5 stars, extracts the genres from those, and weights your recommendations accordingly. Two people rating different movies get completely different results.
+The interesting part: Instead of asking users to pick genres upfront, the system looks at what you rated 4-5 stars, extracts the genres, and weights your recommendations accordingly. Two people rating different content get completely different results.
 
 **Tech Stack:**
-• Frontend: React + Vite, TailwindCSS, React Query
-• Backend: Node.js/Express, PostgreSQL, Redis caching
-• APIs: TMDb, Watchmode, OMDb, Reddit
-• Deployed on Vercel + Render
+React + Node.js + PostgreSQL + Redis + external APIs (TMDb, Watchmode, OMDb, Reddit)
 
-**What I learned building this:**
+**What I learned:**
 ✅ Designing scoring algorithms that balance objective vs subjective data
 ✅ Building a personalization engine that extracts preferences from behavior
-✅ Caching strategies to handle multiple API rate limits
-✅ Full-stack architecture from database design to deployment
+✅ Managing multiple API rate limits and caching strategies
 
-**Challenges:**
-The hardest part was preventing filter bubbles—limiting results per genre so you get diversity instead of just "here's 20 more dramas because you like dramas." Also, managing 4 different external APIs with different rate limits and response formats was... fun.
+**Biggest challenge:**
+Preventing filter bubbles—limiting results per genre so you get diversity instead of just "here's 20 more dramas."
 
-This is a learning project, not a real product. The streaming platform data is spotty and the recommendations aren't perfect, but the point was figuring out how this stuff actually works.
+This is a learning project, not a real product. The streaming data is spotty, but the point was figuring out how recommendation systems actually work.
 
 Try it: https://streampick-recommendations.vercel.app/
 
