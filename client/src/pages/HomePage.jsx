@@ -59,11 +59,16 @@ const HomePage = () => {
             <div className="flex flex-col md:flex-row gap-8 items-center">
               {/* Sample Movie Card */}
               <div className="flex-shrink-0">
-                <div className="w-48 h-72 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg border border-gray-700 flex items-center justify-center">
-                  <div className="text-center p-6">
-                    <div className="text-4xl mb-3">🎬</div>
-                    <div className="text-sm font-semibold mb-2">Sample Movie</div>
-                    <div className="text-xs text-gray-400">Action, Sci-Fi</div>
+                <div className="w-48 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg border border-gray-700 overflow-hidden">
+                  <div className="aspect-[2/3] bg-gradient-to-br from-blue-900/30 via-gray-800 to-purple-900/30 flex items-center justify-center">
+                    <div className="text-center p-4">
+                      <div className="text-5xl mb-2">🌀</div>
+                      <div className="text-xs text-gray-400">INCEPTION</div>
+                    </div>
+                  </div>
+                  <div className="p-3">
+                    <div className="text-sm font-semibold mb-1">Inception</div>
+                    <div className="text-xs text-gray-400">Action, Sci-Fi, Thriller</div>
                   </div>
                 </div>
               </div>
@@ -76,34 +81,34 @@ const HomePage = () => {
                       <span className="text-xl">🍅</span>
                       <span className="text-sm font-medium">Critics</span>
                     </div>
-                    <div className="text-purple-400 font-bold">85/100</div>
+                    <div className="text-purple-400 font-bold">87/100</div>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-blue-900/20 rounded-lg border border-blue-500/30">
                     <div className="flex items-center gap-3">
                       <span className="text-xl">⭐</span>
                       <span className="text-sm font-medium">Users</span>
                     </div>
-                    <div className="text-blue-400 font-bold">78/100</div>
+                    <div className="text-blue-400 font-bold">83/100</div>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-green-900/20 rounded-lg border border-green-500/30">
                     <div className="flex items-center gap-3">
                       <span className="text-xl">💬</span>
                       <span className="text-sm font-medium">Social</span>
                     </div>
-                    <div className="text-green-400 font-bold">92/100</div>
+                    <div className="text-green-400 font-bold">94/100</div>
                   </div>
                   <div className="flex items-center justify-between p-3 bg-red-900/20 rounded-lg border border-red-500/30">
                     <div className="flex items-center gap-3">
                       <span className="text-xl">🎯</span>
                       <span className="text-sm font-medium">Your Match</span>
                     </div>
-                    <div className="text-red-400 font-bold">95/100</div>
+                    <div className="text-red-400 font-bold">96/100</div>
                   </div>
 
                   {/* Final Score */}
                   <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg border-2 border-gray-600 mt-4">
                     <span className="font-semibold">Final Score</span>
-                    <div className="text-2xl font-bold text-white">87/100</div>
+                    <div className="text-2xl font-bold text-white">89/100</div>
                   </div>
                 </div>
               </div>
@@ -114,6 +119,20 @@ const HomePage = () => {
         {/* Algorithm Breakdown */}
         <div className="mb-12">
           <h2 className="text-3xl font-bold mb-8 text-center tracking-tight">The Algorithm</h2>
+
+          {/* Insight Callout */}
+          <div className="max-w-3xl mx-auto mb-8 p-6 bg-gradient-to-r from-blue-900/10 to-purple-900/10 rounded-xl border border-blue-500/20">
+            <div className="flex gap-3">
+              <div className="text-2xl flex-shrink-0">💡</div>
+              <div>
+                <div className="font-semibold text-blue-400 mb-2">Why 30% personal taste?</div>
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  After testing different weight combinations, 30% personal match balanced personalization with discovery. Lower weights led to generic recommendations everyone sees. Higher weights created filter bubbles where you only get more of what you've already watched. This ratio surfaces content aligned with your taste while maintaining diversity.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             <div className="text-center p-6 bg-gradient-to-br from-purple-900/20 to-gray-900 rounded-xl border border-purple-500/30">
               <div className="text-3xl mb-3">🍅</div>
@@ -145,10 +164,10 @@ const HomePage = () => {
         {/* Footer */}
         <div className="text-center max-w-2xl mx-auto pt-8 border-t border-gray-800">
           <p className="text-sm text-gray-400 mb-2">
-            Learning project built with React, Node.js, PostgreSQL, and Redis
+            Side project exploring recommendation algorithms • Built with React, Node.js, PostgreSQL, and Redis
           </p>
           <p className="text-sm text-gray-500">
-            Streaming data may be incomplete • Focus is on the algorithm, not production-ready integrations
+            Streaming data may be incomplete • Focus is on the algorithm and personalization engine
           </p>
         </div>
       </div>
