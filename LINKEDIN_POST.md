@@ -4,7 +4,9 @@
 
 **I built a movie recommendation engine to see if I could do better than "because you watched X..."**
 
-Instead of just collaborative filtering, I wanted to combine multiple data sources and see what happens when you weight them differently.
+You know that feeling when you've scrolled through Netflix for 20 minutes and still can't find anything? The recommendations show you either stuff everyone's already seen or random suggestions that make no sense based on what you actually like.
+
+I wanted to see if combining multiple data sources—critic reviews, user ratings, social buzz, and your actual taste—could surface better options than the typical collaborative filtering approach.
 
 **How it works:**
 The algorithm scores every movie/show based on:
