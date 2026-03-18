@@ -34,7 +34,7 @@ The hardest part was preventing filter bubbles—limiting results per genre so y
 
 This is a learning project, not a real product. The streaming platform data is spotty and the recommendations aren't perfect, but the point was figuring out how this stuff actually works.
 
-Try it: https://client-ruddy-five.vercel.app/
+Try it: https://streampick-recommendations.vercel.app/
 
 Question for people who work on recommendation systems: What data sources do you find most valuable? How do you balance personalization with discovery?
 
@@ -58,7 +58,7 @@ The personalization works by analyzing what you rated highly, extracting the gen
 
 Taught me scoring algorithm design, API integration with rate limits, caching strategies, and full-stack deployment.
 
-Try it: https://client-ruddy-five.vercel.app/
+Try it: https://streampick-recommendations.vercel.app/
 
 What data sources work best for recommendations?
 
