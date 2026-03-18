@@ -20,8 +20,12 @@ const HomePage = () => {
             <span className="text-red-600"> Worth Watching</span>
           </h1>
 
+          <p className="text-xl text-gray-400 mb-4 max-w-3xl mx-auto">
+            Tired of scrolling for 20 minutes only to rewatch The Office again? Most recommendations are either stuff you've already seen or random picks that don't match your taste.
+          </p>
+
           <p className="text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            Combines critic reviews, IMDb ratings, Reddit buzz, and your personal taste into one score
+            This combines critic reviews, IMDb ratings, Reddit buzz, and your personal taste into one score
           </p>
         </div>
 
