@@ -11,45 +11,45 @@ const HomePage = () => {
   console.log('Ratings count:', ratingsCount);
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-5xl mx-auto">
+    <div className="container mx-auto px-4 py-16">
+      <div className="max-w-4xl mx-auto">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-6xl md:text-7xl font-bold mb-6">
+        <div className="text-center mb-20">
+          <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
             Find Something
             <span className="text-red-600"> Worth Watching</span>
           </h1>
 
-          <p className="text-xl text-gray-400 mb-4 max-w-3xl mx-auto">
-            Tired of scrolling for 20 minutes only to rewatch The Office again? Most recommendations are either stuff you've already seen or random picks that don't match your taste.
+          <p className="text-lg text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed">
+            Tired of scrolling for 20 minutes only to rewatch The Office again?
           </p>
 
-          <p className="text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-            This combines critic reviews, IMDb ratings, Reddit buzz, and your personal taste into one score
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            Combines critic reviews, IMDb ratings, Reddit buzz, and your taste into one score
           </p>
         </div>
 
         {/* CTA Section */}
-        <div className="card mb-20 bg-gradient-to-br from-red-900/10 to-gray-900/50 border-red-500/20 max-w-2xl mx-auto">
+        <div className="mb-24 max-w-xl mx-auto">
           {!hasEnoughRatings ? (
-            <div className="text-center">
-              <div className="text-5xl font-bold text-red-500 mb-3">
+            <div className="text-center bg-gray-900/40 backdrop-blur-sm rounded-2xl p-10 border border-gray-700/30">
+              <div className="text-6xl font-bold text-red-500 mb-4">
                 {ratingsCount} / 5
               </div>
-              <p className="text-xl text-gray-300 mb-8">
-                Rate {5 - ratingsCount} more {5 - ratingsCount === 1 ? 'movie' : 'movies'} to get started
+              <p className="text-lg text-gray-400 mb-8">
+                Rate {5 - ratingsCount} more to get started
               </p>
-              <Link to="/rate" className="btn-primary text-lg px-8 py-3">
+              <Link to="/rate" className="btn-primary">
                 Start Rating
               </Link>
             </div>
           ) : (
-            <div className="text-center">
-              <div className="text-5xl mb-4">✓</div>
-              <p className="text-2xl text-green-400 font-semibold mb-8">
+            <div className="text-center bg-gray-900/40 backdrop-blur-sm rounded-2xl p-10 border border-gray-700/30">
+              <div className="text-6xl mb-4">✓</div>
+              <p className="text-xl text-green-400 mb-8">
                 You've rated {ratingsCount} movies
               </p>
-              <Link to="/recommendations" className="btn-primary text-lg px-8 py-3">
+              <Link to="/recommendations" className="btn-primary">
                 See Your Recommendations
               </Link>
             </div>
@@ -57,39 +57,36 @@ const HomePage = () => {
         </div>
 
         {/* Algorithm Breakdown */}
-        <div className="mb-20">
-          <h2 className="text-4xl font-bold mb-12 text-center">The Algorithm</h2>
-          <div className="grid md:grid-cols-4 gap-6">
-            <div className="card p-6 bg-gradient-to-br from-purple-900/20 to-gray-900 border-purple-500/30">
-              <div className="text-4xl font-bold text-purple-400 mb-3">25%</div>
-              <div className="text-lg font-semibold mb-2">Critics</div>
-              <div className="text-sm text-gray-400">Rotten Tomatoes, Metacritic</div>
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold mb-10 text-center text-gray-300">How It Works</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+            <div className="text-center p-6 bg-gray-900/30 rounded-xl border border-gray-700/30">
+              <div className="text-3xl font-bold text-purple-400 mb-2">25%</div>
+              <div className="text-sm font-semibold mb-1">Critics</div>
+              <div className="text-xs text-gray-500">RT, Metacritic</div>
             </div>
-            <div className="card p-6 bg-gradient-to-br from-blue-900/20 to-gray-900 border-blue-500/30">
-              <div className="text-4xl font-bold text-blue-400 mb-3">25%</div>
-              <div className="text-lg font-semibold mb-2">User Ratings</div>
-              <div className="text-sm text-gray-400">IMDb, TMDb</div>
+            <div className="text-center p-6 bg-gray-900/30 rounded-xl border border-gray-700/30">
+              <div className="text-3xl font-bold text-blue-400 mb-2">25%</div>
+              <div className="text-sm font-semibold mb-1">Users</div>
+              <div className="text-xs text-gray-500">IMDb, TMDb</div>
             </div>
-            <div className="card p-6 bg-gradient-to-br from-green-900/20 to-gray-900 border-green-500/30">
-              <div className="text-4xl font-bold text-green-400 mb-3">20%</div>
-              <div className="text-lg font-semibold mb-2">Social Buzz</div>
-              <div className="text-sm text-gray-400">Reddit trends</div>
+            <div className="text-center p-6 bg-gray-900/30 rounded-xl border border-gray-700/30">
+              <div className="text-3xl font-bold text-green-400 mb-2">20%</div>
+              <div className="text-sm font-semibold mb-1">Social</div>
+              <div className="text-xs text-gray-500">Reddit</div>
             </div>
-            <div className="card p-6 bg-gradient-to-br from-red-900/20 to-gray-900 border-red-500/30">
-              <div className="text-4xl font-bold text-red-400 mb-3">30%</div>
-              <div className="text-lg font-semibold mb-2">Your Taste</div>
-              <div className="text-sm text-gray-400">Genre extraction</div>
+            <div className="text-center p-6 bg-gray-900/30 rounded-xl border border-gray-700/30">
+              <div className="text-3xl font-bold text-red-400 mb-2">30%</div>
+              <div className="text-sm font-semibold mb-1">Your Taste</div>
+              <div className="text-xs text-gray-500">Your ratings</div>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="text-center text-sm text-gray-500 max-w-2xl mx-auto">
-          <p className="mb-2">
-            Learning project built with React, Node.js, PostgreSQL, and Redis
-          </p>
+        <div className="text-center text-xs text-gray-600 max-w-xl mx-auto pt-8 border-t border-gray-800">
           <p>
-            Streaming data may be incomplete • Focus is on the algorithm, not production accuracy
+            Learning project • React + Node.js + PostgreSQL + Redis
           </p>
         </div>
       </div>
