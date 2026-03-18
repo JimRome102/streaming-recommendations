@@ -20,12 +20,8 @@ const HomePage = () => {
             <span className="text-red-600"> Worth Watching</span>
           </h1>
 
-          <p className="text-lg text-gray-400 mb-5 max-w-2xl mx-auto">
-            Tired of scrolling for 20 minutes only to rewatch The Office again?
-          </p>
-
-          <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-            Combines critic reviews, IMDb ratings, Reddit buzz, and your taste into one score
+          <p className="text-xl text-gray-300 mb-4 max-w-2xl mx-auto leading-relaxed">
+            Tired of scrolling for 20 minutes only to rewatch The Office again? This combines critic reviews, IMDb ratings, Reddit buzz, and your personal taste into one score.
           </p>
         </div>
 
@@ -44,8 +40,8 @@ const HomePage = () => {
               </Link>
             </div>
           ) : (
-            <div className="text-center bg-gradient-to-br from-yellow-900/20 to-gray-900/50 backdrop-blur-sm rounded-2xl p-10 border border-yellow-500/30">
-              <div className="text-3xl text-yellow-400 font-semibold mb-3">✓ You're All Set!</div>
+            <div className="text-center bg-gradient-to-br from-cyan-900/20 to-gray-900/50 backdrop-blur-sm rounded-2xl p-10 border border-cyan-500/30">
+              <div className="text-3xl text-cyan-400 font-semibold mb-3">✓ You're All Set!</div>
               <p className="text-lg text-gray-300 mb-8">
                 You've rated {ratingsCount} movies
               </p>
@@ -56,9 +52,68 @@ const HomePage = () => {
           )}
         </div>
 
+        {/* Visual Example */}
+        <div className="mb-14 max-w-3xl mx-auto">
+          <h2 className="text-3xl font-bold mb-8 text-center tracking-tight">See It In Action</h2>
+          <div className="bg-gray-900/40 rounded-2xl p-8 border border-gray-700/30">
+            <div className="flex flex-col md:flex-row gap-8 items-center">
+              {/* Sample Movie Card */}
+              <div className="flex-shrink-0">
+                <div className="w-48 h-72 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg border border-gray-700 flex items-center justify-center">
+                  <div className="text-center p-6">
+                    <div className="text-4xl mb-3">🎬</div>
+                    <div className="text-sm font-semibold mb-2">Sample Movie</div>
+                    <div className="text-xs text-gray-400">Action, Sci-Fi</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Score Breakdown */}
+              <div className="flex-1">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-purple-900/20 rounded-lg border border-purple-500/30">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">🍅</span>
+                      <span className="text-sm font-medium">Critics</span>
+                    </div>
+                    <div className="text-purple-400 font-bold">85/100</div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-blue-900/20 rounded-lg border border-blue-500/30">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">⭐</span>
+                      <span className="text-sm font-medium">Users</span>
+                    </div>
+                    <div className="text-blue-400 font-bold">78/100</div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-green-900/20 rounded-lg border border-green-500/30">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">💬</span>
+                      <span className="text-sm font-medium">Social</span>
+                    </div>
+                    <div className="text-green-400 font-bold">92/100</div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-red-900/20 rounded-lg border border-red-500/30">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">🎯</span>
+                      <span className="text-sm font-medium">Your Match</span>
+                    </div>
+                    <div className="text-red-400 font-bold">95/100</div>
+                  </div>
+
+                  {/* Final Score */}
+                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg border-2 border-gray-600 mt-4">
+                    <span className="font-semibold">Final Score</span>
+                    <div className="text-2xl font-bold text-white">87/100</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Algorithm Breakdown */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold mb-8 text-center tracking-tight">How It Works</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center tracking-tight">The Algorithm</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             <div className="text-center p-6 bg-gradient-to-br from-purple-900/20 to-gray-900 rounded-xl border border-purple-500/30">
               <div className="text-3xl mb-3">🍅</div>
@@ -88,12 +143,12 @@ const HomePage = () => {
         </div>
 
         {/* Footer */}
-        <div className="text-center text-sm text-gray-500 max-w-2xl mx-auto pt-8 border-t border-gray-800">
-          <p className="mb-2">
+        <div className="text-center max-w-2xl mx-auto pt-8 border-t border-gray-800">
+          <p className="text-sm text-gray-400 mb-2">
             Learning project built with React, Node.js, PostgreSQL, and Redis
           </p>
-          <p className="text-xs text-gray-600">
-            Streaming data may be incomplete • The focus is on the algorithm, not production-ready streaming integrations
+          <p className="text-sm text-gray-500">
+            Streaming data may be incomplete • Focus is on the algorithm, not production-ready integrations
           </p>
         </div>
       </div>
