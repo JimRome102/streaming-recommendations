@@ -44,8 +44,8 @@ const HomePage = () => {
               </Link>
             </div>
           ) : (
-            <div className="text-center bg-gradient-to-br from-blue-900/20 to-gray-900/50 backdrop-blur-sm rounded-2xl p-10 border border-blue-500/30">
-              <div className="text-3xl text-blue-400 font-semibold mb-3">✓ You're All Set!</div>
+            <div className="text-center bg-gradient-to-br from-emerald-900/20 to-gray-900/50 backdrop-blur-sm rounded-2xl p-10 border border-emerald-500/30">
+              <div className="text-3xl text-emerald-400 font-semibold mb-3">✓ You're All Set!</div>
               <p className="text-lg text-gray-300 mb-8">
                 You've rated {ratingsCount} movies
               </p>
