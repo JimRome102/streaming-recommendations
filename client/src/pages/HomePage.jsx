@@ -62,8 +62,7 @@ const HomePage = () => {
                 <div className="w-48 bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg border border-gray-700 overflow-hidden">
                   <div className="aspect-[2/3] bg-gradient-to-br from-blue-900/30 via-gray-800 to-purple-900/30 flex items-center justify-center">
                     <div className="text-center p-4">
-                      <div className="text-5xl mb-2">🌀</div>
-                      <div className="text-xs text-gray-400">INCEPTION</div>
+                      <div className="text-lg font-bold text-gray-300 tracking-widest">INCEPTION</div>
                     </div>
                   </div>
                   <div className="p-3">
