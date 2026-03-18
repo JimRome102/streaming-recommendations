@@ -120,20 +120,7 @@ const HomePage = () => {
         <div className="mb-12">
           <h2 className="text-3xl font-bold mb-8 text-center tracking-tight">The Algorithm</h2>
 
-          {/* Insight Callout */}
-          <div className="max-w-3xl mx-auto mb-8 p-6 bg-gradient-to-r from-blue-900/10 to-purple-900/10 rounded-xl border border-blue-500/20">
-            <div className="flex gap-3">
-              <div className="text-2xl flex-shrink-0">💡</div>
-              <div>
-                <div className="font-semibold text-blue-400 mb-2">Why 30% personal taste?</div>
-                <p className="text-sm text-gray-300 leading-relaxed">
-                  After testing different weight combinations, 30% personal match balanced personalization with discovery. Lower weights led to generic recommendations everyone sees. Higher weights created filter bubbles where you only get more of what you've already watched. This ratio surfaces content aligned with your taste while maintaining diversity.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-8">
             <div className="text-center p-6 bg-gradient-to-br from-purple-900/20 to-gray-900 rounded-xl border border-purple-500/30">
               <div className="text-3xl mb-3">🍅</div>
               <div className="text-4xl font-bold text-purple-400 mb-3 tracking-tight">25%</div>
@@ -157,6 +144,19 @@ const HomePage = () => {
               <div className="text-4xl font-bold text-red-400 mb-3 tracking-tight">30%</div>
               <div className="text-base font-semibold mb-2">Your Taste</div>
               <div className="text-sm text-gray-400">Based on your ratings</div>
+            </div>
+          </div>
+
+          {/* Insight Callout */}
+          <div className="max-w-3xl mx-auto mt-8 p-6 bg-gradient-to-r from-blue-900/10 to-purple-900/10 rounded-xl border border-blue-500/20">
+            <div className="flex gap-3">
+              <div className="text-2xl flex-shrink-0">💡</div>
+              <div>
+                <div className="font-semibold text-blue-400 mb-2">Why 30% personal taste?</div>
+                <p className="text-sm text-gray-300 leading-relaxed">
+                  After testing different weight combinations, 30% personal match balanced personalization with discovery. Lower weights led to generic recommendations everyone sees. Higher weights created filter bubbles where you only get more of what you've already watched. This ratio surfaces content aligned with your taste while maintaining diversity.
+                </p>
+              </div>
             </div>
           </div>
         </div>
